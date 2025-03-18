@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from './components/login'; 
 import Menu from "./components/menu";
+import Register from "./components/register";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/menu" element={<Menu />} />
-            {/* Redireciona para a página de login caso a rota não exista */}
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </header>

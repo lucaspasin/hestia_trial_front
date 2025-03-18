@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import useRegister from "../hooks/useRegister"; // Usando o hook de registro
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin, loading, error } = useAuth();
-  const navigate = useNavigate(); // Hook para redirecionamento
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { register, loading, error, message } = useRegister();
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const success = await handleLogin(email, password);
-    if (success) {
-      navigate("/menu");
-    }
-  };
 
-  const goToRegister = () => {
-    navigate("/register"); // Redireciona para a página de registro
+    await register(email, password, confirmPassword);
+
+    if (!error && message) {
+      alert(message); // Exibe a mensagem de sucesso
+      navigate("/"); // Redireciona para a tela de login
+    }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Registro</h2>
       <form onSubmit={onSubmit}>
         <div>
           <label htmlFor="email">Email</label>
@@ -44,14 +44,23 @@ const Login = () => {
             required
           />
         </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirmar Senha</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Entrando..." : "Login"}
+          {loading ? "Registrando..." : "Registrar"}
         </button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={goToRegister}>Criar uma conta</button>
     </div>
   );
 };
 
-export default Login;
+export default Register;
