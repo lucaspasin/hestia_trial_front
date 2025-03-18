@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login } from "../services/AuthService";
+import { login } from "../services/AuthService"
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);
@@ -9,14 +9,18 @@ export const useAuth = () => {
     setLoading(true);
     setError("");
 
-    const result = await login(email, password);
-
-    if (!result.success) {
-      setError(result.message);
+    try {
+      const result = await login(email, password);
+      if (!result.success) {
+        setError(result.message);
+      }
+      return result.success;
+    } catch (err) {
+      setError(err.message || "Erro desconhecido");
+      return false;
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-    return result.success;
   };
 
   return { handleLogin, loading, error };

@@ -19,11 +19,11 @@ export const useCep = () => {
 
     const result = await fetchCep(cep, token);
 
-    if (result.error) {
-      setError(result.error);
+    if (!result.success) {
+      setError(result.message);
       setCepData(null);
     } else {
-      setCepData(result);
+      setCepData(result.data);
     }
 
     setLoading(false);

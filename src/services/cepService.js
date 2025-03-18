@@ -11,9 +11,10 @@ export const fetchCep = async (cep, token) => {
       if (!response.ok) {
         throw new Error("Erro ao buscar o CEP");
       }
-  
-      return await response.json();
+
+      const data = await response.json();
+      return { success: true, data: data };
     } catch (error) {
-      return { error: error.message };
+      return { success: false, message: error.message  };
     }
   };
